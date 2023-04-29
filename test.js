@@ -1,4 +1,4 @@
-Algebra(3,0,1,()=>{
+var PGA3D = Algebra(3,0,1,()=>{
   
   /*
   // Direct specification of basis blades using e-notation.
