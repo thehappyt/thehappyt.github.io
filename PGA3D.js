@@ -37,6 +37,19 @@ function PGA3D() {
     });
   });
 
+  console.log("Basis: " + basis);
+  console.log("Low: " + low);
+  console.log("Grades: " + grades);
+  console.log("Grade Start: " + grade_start);
+  console.log("BRM: " + brm);
+  console.log("DRM: " + drm);
+  console.log("DRMS: " + drms);
+  console.log("Mult Table: " + mulTable);
+  console.log("GP: " + gp);
+  console.log("CP: " + cp);
+  console.log("CPS: " + cps);
+  console.log("OP: " + op);
+
   var generator = class MultiVector extends (Float32Array) {
     constructor() { super(basis.length); return this; }
     
