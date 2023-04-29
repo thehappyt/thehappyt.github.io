@@ -41,7 +41,6 @@ function PGA3D() {
   console.log("Low: " + low);
   console.log("Grades: " + grades);
   console.log("Grade Start: " + grade_start);
-  console.log("BRM: " + brm);
   console.log("DRM: " + drm);
   console.log("DRMS: " + drms);
   console.log("Mult Table: " + mulTable);
