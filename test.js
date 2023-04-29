@@ -1,6 +1,5 @@
 var PGA3D = Algebra(3,0,1,()=>{
   
-  /*
   // Direct specification of basis blades using e-notation.
   var xy_bivector = 1e12,
       pseudoscalar = 1e012;
@@ -28,6 +27,7 @@ var PGA3D = Algebra(3,0,1,()=>{
   
   // All elements and functions can be rendered directly. (again, no calling brackets). 
   var canvas = this.graph([ some_point, function_that_returns_point, function_that_returns_join ]);
-  */
+
+  console.log(this);
 
 });
