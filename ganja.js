@@ -1778,19 +1778,28 @@
         }
       // Get the source input text.
         var txt = (intxt instanceof Function)?intxt.toString():`function(){return (${intxt})}`;
+        console.log(intxt);
       // Our tokenizer reads the text token by token and stores it in the tok array (as type/token tuples).
-        var tok = [], resi=[], t, possibleRegex=false, c, tokens = [/^[\s\uFFFF]|^[\u000A\u000D\u2028\u2029]|^\/\/[^\n]*\n|^\/\*[\s\S]*?\*\//g,                 // 0: whitespace/comments
+        var tok = [], resi=[], t, possibleRegex=false, c;
+        var tokens = [/^[\s\uFFFF]|^[\u000A\u000D\u2028\u2029]|^\/\/[^\n]*\n|^\/\*[\s\S]*?\*\//g,                                       // 0: whitespace/comments
           /^\"\"|^\'\'|^\".*?[^\\]\"|^\'.*?[^\\]\'|^\`[\s\S]*?[^\\]\`/g,                                                                // 1: literal strings
           /^\d+[.]{0,1}\d*[ei][\+\-_]{0,1}\d*|^\.\d+[ei][\+\-_]{0,1}\d*|^e_\d*/g,                                                       // 2: literal numbers in scientific notation (with small hack for i and e_ asciimath)
           /^\d+[.]{0,1}\d*[E][+-]{0,1}\d*|^\.\d+[E][+-]{0,1}\d*|^0x\d+|^\d+[.]{0,1}\d*|^\.\d+/g,                                        // 3: literal hex, nonsci numbers
           /^\/.*?[^\\]\/[gmisuy]?/g,                                                                                                    // 4: regex
           /^(\.Normalized|\.Length|\.\.\.|>>>=|===|!==|>>>|<<=|>>=|=>|\|\||[<>\+\-\*%&|^\/!\=]=|\*\*|\+\+|\-\-|<<|>>|\&\&|\^\^|^[{}()\[\];.,<>\+\-\*%|&^!~?:=\/]{1})/g,   // 5: punctuator
-          /^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\u200C\u200D]*/gu]                                                                 // 6: identifier
-        while (txt.length) for (t in tokens) {
-          if (t == 4 && !possibleRegex) continue;
-          if (resi = txt.match(tokens[t])) {
-            c = resi[0]; if (t!=0) {possibleRegex = c == '(' || c == '=' || c == '[' || c == ',' || c == ';';} tok.push([t | 0, c]); txt = txt.slice(c.length); break;
-          }} // tokenise
+          /^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\u200C\u200D]*/gu];                                                                // 6: identifier
+        while (txt.length) {
+          for (t in tokens) {
+            if (t == 4 && !possibleRegex) continue;
+            if (resi = txt.match(tokens[t])) {
+              c = resi[0];
+              if (t!=0) { possibleRegex = c == '(' || c == '=' || c == '[' || c == ',' || c == ';'; };
+              tok.push([t | 0, c]);
+              txt = txt.slice(c.length);
+              break;
+            }
+          } // tokenise
+        }
       // Translate algebraic literals. (scientific e-notation to "this.Coeff"
         tok=tok.map(t=>(t[0]==2)?[2,'Element.Coeff('+basis.indexOf((!options.Cayley?simplify:(x)=>x)('e'+t[1].split(/e_|e|i/)[1]||1).replace('-',''))+','+(simplify(t[1].split(/e_|e|i/)[1]||1).match('-')?"-1*":"")+parseFloat(t[1][0]=='e'?1:t[1].split(/e_|e|i/)[0])+')']:t);
       // String templates (limited support - needs fundamental changes.).
